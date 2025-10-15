@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback de Experiência | CONEXTRAVEL</title>
+
+    <link rel="icon" type="image/png" href="Images/favicon.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="page-header">
+        <div class="header-container">
+            <a href="#" id="logo-link">
+                <img src="Images/logo-conex.png" alt="Logo Conextravel" class="logo">
+            </a>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="feedback-container">
+            <div class="feedback-intro">
+                <h1>SUA OPINIÃO É FUNDAMENTAL</h1>
+                <p>Seu feedback nos ajuda a aprimorar cada detalhe da sua experiência de viagem com a CONEXTRAVEL. Por favor, dedique um momento para nos contar como foi.</p>
+            </div>
+
+            <form id="feedback-form">
+                
+                <div class="progress-bar-container">
+                    <div id="progress-bar" class="progress-bar"></div>
+                </div>
+                
+                <div class="form-step active-step">
+                    <h2>Para começar, qual o nome da sua empresa?</h2>
+                    <div class="form-group">
+                        <input type="text" id="nome-empresa" name="nomeEmpresa" placeholder=" " required>
+                        <label for="nome-empresa" class="input-label">Nome da Empresa</label>
+                    </div>
+                    <div class="nav-buttons">
+                        <button type="button" class="nav-button next">Avançar</button>
+                    </div>
+                </div>
+
+                <div class="form-step">
+                    <h2>Em uma escala de 0 a 5, como você avalia sua experiência geral?</h2>
+                    <div class="form-group">
+                        <div class="range-container">
+                            <input type="range" id="satisfacao-atendimento" name="satisfacaoAtendimento" min="0" max="5" step="1" value="5">
+                        </div>
+                        <div class="range-value-display">5</div>
+                    </div>
+                    <div class="nav-buttons">
+                        <button type="button" class="nav-button prev">Voltar</button>
+                        <button type="button" class="nav-button next">Avançar</button>
+                    </div>
+                </div>
+
+                <div class="form-step">
+                    <h2>O que mais impactou positivamente sua experiência?</h2>
+                    <div class="form-group radio-grid">
+                        <div class="radio-option"><input type="radio" id="destaque-agilidade" name="pontoDestaque" value="Agilidade e Eficiência" required><label for="destaque-agilidade">Agilidade e Eficiência</label></div>
+                        <div class="radio-option"><input type="radio" id="destaque-atendimento" name="pontoDestaque" value="Atendimento Personalizado" required><label for="destaque-atendimento">Atendimento Personalizado</label></div>
+                        <div class="radio-option"><input type="radio" id="destaque-plataforma" name="pontoDestaque" value="Facilidade da Plataforma" required><label for="destaque-plataforma">Facilidade da Plataforma</label></div>
+                        <div class="radio-option"><input type="radio" id="destaque-custos" name="pontoDestaque" value="Redução de Custos" required><label for="destaque-custos">Redução de Custos</label></div>
+                        <div class="radio-option"><input type="radio" id="destaque-outros" name="pontoDestaque" value="Outros" required><label for="destaque-outros">Outros</label></div>
+                    </div>
+                    <div id="outros-destaque-container" class="conditional-container">
+                        <textarea id="destaque-outros-texto" name="pontoDestaqueOutros" rows="3" placeholder=" "></textarea>
+                        <label for="destaque-outros-texto" class="input-label">Por favor, especifique</label>
+                    </div>
+                    <div class="nav-buttons">
+                        <button type="button" class="nav-button prev">Voltar</button>
+                        <button type="button" class="nav-button next">Avançar</button>
+                    </div>
+                </div>
+
+                <div class="form-step">
+                    <h2>Você sabia que a Conextravel também possui um departamento especializado em eventos corporativos, viagens de incentivo e premiações?</h2>
+                    <div class="form-group radio-grid simple">
+                        <div class="radio-option"><input type="radio" id="eventos-utilizei" name="conheceEventos" value="Sim, e já utilizei os serviços" required><label for="eventos-utilizei">Sim, já Conheço</label></div>
+                        <div class="radio-option"><input type="radio" id="eventos-conheco" name="conheceEventos" value="Conheço, mas nunca utilizei" required><label for="eventos-conheco">Não sabia, gostaria de saber mais sobre.</label></div>
+                        <div class="radio-option"><input type="radio" id="eventos-interesse" name="conheceEventos" value="Não conhecia e tenho interesse em saber mais" required><label for="eventos-interesse">Não tenho interesse</label></div>
+                    </div>
+                    <div class="nav-buttons">
+                        <button type="button" class="nav-button prev">Voltar</button>
+                        <button type="button" class="nav-button next">Avançar</button>
+                    </div>
+                </div>
+                
+                <div class="form-step">
+                    <h2>Para finalizarmos, você tem alguma sugestão ou comentário?</h2>
+                    <div class="form-group">
+                        <textarea id="comentarios" name="comentarios" rows="4" placeholder=" "></textarea>
+                        <label for="comentarios" class="input-label">Sua mensagem</label>
+                    </div>
+                    <div class="nav-buttons">
+                        <button type="button" class="nav-button prev">Voltar</button>
+                        <button type="submit" class="nav-button submit">Enviar Feedback</button>
+                    </div>
+                </div>
+            
+            </form>
+            <div id="status-message"></div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-about">
+                <img src="Images/logo-conex.png" alt="Logo Conextravel Branca" class="footer-logo">
+                <p>Uma Agência de Viagens completa.</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 CONEXTRAVEL. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
