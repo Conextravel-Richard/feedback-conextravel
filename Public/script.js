@@ -47,11 +47,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // LÓGICA ATUALIZADA PARA 'pontoDestaque' (AGORA CHECKBOX)
     const pontoDestaqueRadios = form.querySelectorAll('input[name="pontoDestaque"]');
     const outrosDestaqueContainer = document.getElementById('outros-destaque-container');
     const outrosDestaqueTexto = document.getElementById('destaque-outros-texto');
     
+    // Lógica para 'pontoDestaque' (agora checkbox)
     pontoDestaqueRadios.forEach(checkbox => {
         checkbox.addEventListener('change', () => {
             const outrosCheckbox = document.getElementById('destaque-outros');
@@ -66,19 +66,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // LÓGICA DE VALIDAÇÃO DO BOTÃO "AVANÇAR" CORRIGIDA
+    // --- LÓGICA DE VALIDAÇÃO CORRIGIDA E ROBUSTA ---
     nextButtons.forEach(button => {
         button.addEventListener('click', () => {
             const currentInputs = formSteps[currentStep].querySelectorAll('[required]');
             let isValid = true;
-            
-            // Valida apenas os campos de texto 'required'
+            let checkedGroups = {}; // Para rastrear grupos
+
             currentInputs.forEach(input => {
-                if (input.type === 'text' && !input.value.trim()) {
-                    isValid = false;
-                }
-                // Não é mais
-                if(input.type === 'radio' && !form.querySelector(`input[name="${input.name}"]:checked`)) {
+                // Ignora campos que estão escondidos
+                if (input.offsetWidth === 0 && input.offsetHeight === 0) return; 
+
+                if (input.type === 'radio' || input.type === 'checkbox') {
+                    const groupName = input.name;
+                    if (checkedGroups[groupName] === undefined) { 
+                        if (!form.querySelector(`input[name="${groupName}"]:checked`)) {
+                            isValid = false;
+                        }
+                        checkedGroups[groupName] = true;
+                    }
+                } else if (!input.value.trim()) { // Validação para campos de texto
                     isValid = false;
                 }
             });
@@ -101,9 +108,34 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ENVIO PARA O NOTION (CORRIGIDO PARA O BOTÃO FUNCIONAR)
+    // --- ENVIO PARA O NOTION (ESTÁVEL E CORRETO) ---
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
+        
+        // Validação final antes de enviar
+        const allRequiredInputs = form.querySelectorAll('[required]');
+        let isFormValid = true;
+        let checkedGroups = {};
+        
+        allRequiredInputs.forEach(input => {
+             if (input.offsetWidth === 0 && input.offsetHeight === 0) return;
+             if (input.type === 'radio' || input.type === 'checkbox') {
+                const groupName = input.name;
+                if(checkedGroups[groupName] === undefined) {
+                    if (!form.querySelector(`input[name="${groupName}"]:checked`)) isFormValid = false;
+                    checkedGroups[groupName] = true;
+                }
+             } else if (!input.value.trim()) {
+                isFormValid = false;
+             }
+        });
+
+        if (!isFormValid) {
+             statusMessage.textContent = 'Por favor, preencha todos os campos obrigatórios.';
+             statusMessage.style.color = 'red';
+             return;
+        }
+
         statusMessage.textContent = 'Enviando seu feedback...';
         statusMessage.style.color = 'var(--conextravel-azul)';
         
@@ -112,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
             nomeEmpresa: formData.get('nomeEmpresa'),
             seuNome: formData.get('seuNome'),
             satisfacaoAtendimento: formData.get('satisfacaoAtendimento'),
-            pontoDestaque: formData.getAll('pontoDestaque').join(', '), // ATUALIZADO
+            pontoDestaque: formData.getAll('pontoDestaque').join(', '),
             pontoDestaqueOutros: formData.get('pontoDestaqueOutros'),
             conheceEventos: formData.getAll('conheceEventos').join(', '),
             comentarios: formData.get('comentarios')
