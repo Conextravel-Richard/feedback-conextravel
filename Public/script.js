@@ -51,7 +51,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const outrosDestaqueContainer = document.getElementById('outros-destaque-container');
     const outrosDestaqueTexto = document.getElementById('destaque-outros-texto');
     
-    // Lógica para 'pontoDestaque' (agora checkbox)
     pontoDestaqueRadios.forEach(checkbox => {
         checkbox.addEventListener('change', () => {
             const outrosCheckbox = document.getElementById('destaque-outros');
@@ -66,32 +65,34 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- LÓGICA DE VALIDAÇÃO CORRIGIDA E ROBUSTA ---
+    // --- LÓGICA DE VALIDAÇÃO DO BOTÃO "AVANÇAR" CORRIGIDA ---
     nextButtons.forEach(button => {
         button.addEventListener('click', () => {
-            const currentInputs = formSteps[currentStep].querySelectorAll('[required]');
             let isValid = true;
-            let checkedGroups = {}; // Para rastrear grupos
-
+            // Pega todos os inputs 'required' APENAS na etapa atual
+            const currentInputs = formSteps[currentStep].querySelectorAll('[required]');
+            
+            // Valida cada um usando a API do navegador
             currentInputs.forEach(input => {
-                // Ignora campos que estão escondidos
-                if (input.offsetWidth === 0 && input.offsetHeight === 0) return; 
-
-                if (input.type === 'radio' || input.type === 'checkbox') {
-                    const groupName = input.name;
-                    if (checkedGroups[groupName] === undefined) { 
-                        if (!form.querySelector(`input[name="${groupName}"]:checked`)) {
-                            isValid = false;
-                        }
-                        checkedGroups[groupName] = true;
-                    }
-                } else if (!input.value.trim()) { // Validação para campos de texto
+                if (!input.checkValidity()) {
                     isValid = false;
                 }
             });
+
+            // Lógica especial para grupos de checkbox
+            const checkboxGroups = formSteps[currentStep].querySelectorAll('input[type="checkbox"][required]');
+            if (checkboxGroups.length > 0) {
+                const groupName = checkboxGroups[0].name;
+                if (!form.querySelector(`input[name="${groupName}"]:checked`)) {
+                    isValid = false;
+                }
+            }
             
-            if (isValid && currentStep < formSteps.length - 1) {
+            if (isValid) {
                 showStep(currentStep + 1);
+            } else {
+                // Se for inválido, força o navegador a mostrar a mensagem de erro
+                form.reportValidity();
             }
         });
     });
@@ -108,32 +109,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- ENVIO PARA O NOTION (ESTÁVEL E CORRETO) ---
+    // --- ENVIO PARA O NOTION (CORRIGIDO) ---
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        // Validação final antes de enviar
-        const allRequiredInputs = form.querySelectorAll('[required]');
-        let isFormValid = true;
-        let checkedGroups = {};
-        
-        allRequiredInputs.forEach(input => {
-             if (input.offsetWidth === 0 && input.offsetHeight === 0) return;
-             if (input.type === 'radio' || input.type === 'checkbox') {
-                const groupName = input.name;
-                if(checkedGroups[groupName] === undefined) {
-                    if (!form.querySelector(`input[name="${groupName}"]:checked`)) isFormValid = false;
-                    checkedGroups[groupName] = true;
-                }
-             } else if (!input.value.trim()) {
-                isFormValid = false;
-             }
-        });
-
-        if (!isFormValid) {
-             statusMessage.textContent = 'Por favor, preencha todos os campos obrigatórios.';
-             statusMessage.style.color = 'red';
-             return;
+        // Verifica a validade do formulário inteiro uma última vez
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
         }
 
         statusMessage.textContent = 'Enviando seu feedback...';
