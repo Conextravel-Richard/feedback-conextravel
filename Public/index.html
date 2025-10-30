@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feedback de Experiência | CONEXTRAVEL</title>
-
+    
     <link rel="icon" type="image/png" href="Images/favicon.png">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,7 +27,7 @@
         <div class="feedback-container">
             <div class="feedback-intro">
                 <h1>SUA OPINIÃO É FUNDAMENTAL</h1>
-                <p>Seu feedback nos ajuda a aprimorar cada detalhe da sua experiência de viagem com a CONEXTRAVEL. Por favor, dedique um momento para nos contar como foi.</p>
+                <p>Seu feedback nos ajuda a aprimorar cada detalhe da sua experiência de viagem com a CONEXTRAVEL. Por favor, dedique um minuto do seu tempo para nos contar como foi.</p>
             </div>
 
             <form id="feedback-form">
@@ -37,10 +37,14 @@
                 </div>
                 
                 <div class="form-step active-step">
-                    <h2>Para começar, qual o nome da sua empresa?</h2>
+                    <h2>Para começar, vamos nos identificar:</h2>
                     <div class="form-group">
                         <input type="text" id="nome-empresa" name="nomeEmpresa" placeholder=" " required>
                         <label for="nome-empresa" class="input-label">Nome da Empresa</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="seu-nome" name="seuNome" placeholder=" " required>
+                        <label for="seu-nome" class="input-label">Seu nome</label>
                     </div>
                     <div class="nav-buttons">
                         <button type="button" class="nav-button next">Avançar</button>
@@ -81,11 +85,24 @@
                 </div>
 
                 <div class="form-step">
-                    <h2>Você sabia que a Conextravel também possui um departamento especializado em eventos corporativos, viagens de incentivo e premiações?</h2>
-                    <div class="form-group radio-grid simple">
-                        <div class="radio-option"><input type="radio" id="eventos-utilizei" name="conheceEventos" value="Sim, e já utilizei os serviços" required><label for="eventos-utilizei">Sim, já Conheço</label></div>
-                        <div class="radio-option"><input type="radio" id="eventos-conheco" name="conheceEventos" value="Conheço, mas nunca utilizei" required><label for="eventos-conheco">Não sabia, gostaria de saber mais sobre.</label></div>
-                        <div class="radio-option"><input type="radio" id="eventos-interesse" name="conheceEventos" value="Não conhecia e tenho interesse em saber mais" required><label for="eventos-interesse">Não tenho interesse</label></div>
+                    <h2>Sobre nosso departamento de eventos corporativos, viagens de incentivo e premiações: (pode marcar mais de uma)</h2>
+                    <div class="form-group checkbox-grid">
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="eventos-utilizei" name="conheceEventos" value="Sim, e já utilizei os serviços" required>
+                            <label for="eventos-utilizei">Sim, já Conheço e utilizei</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="eventos-conheco" name="conheceEventos" value="Conheço, mas nunca utilizei" required>
+                            <label for="eventos-conheco">Conheço, mas nunca utilizei</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="eventos-interesse" name="conheceEventos" value="Não conhecia e tenho interesse" required>
+                            <label for="eventos-interesse">Não sabia, gostaria de saber mais sobre</label>
+                        </div>
+                         <div class="checkbox-option">
+                            <input type="checkbox" id="eventos-nao-interesse" name="conheceEventos" value="Não tenho interesse" required>
+                            <label for="eventos-nao-interesse">Não tenho interesse</label>
+                        </div>
                     </div>
                     <div class="nav-buttons">
                         <button type="button" class="nav-button prev">Voltar</button>
@@ -94,7 +111,7 @@
                 </div>
                 
                 <div class="form-step">
-                    <h2>Para finalizarmos, você tem alguma sugestão ou comentário?</h2>
+                    <h2>Para finalizar, em sua opinião, o que podemos melhorar?</h2>
                     <div class="form-group">
                         <textarea id="comentarios" name="comentarios" rows="4" placeholder=" "></textarea>
                         <label for="comentarios" class="input-label">Sua mensagem</label>
@@ -116,7 +133,7 @@
                 <img src="Images/logo-conex.png" alt="Logo Conextravel Branca" class="footer-logo">
                 <p>Uma Agência de Viagens completa.</p>
             </div>
-        </div>
+            </div>
         <div class="footer-bottom">
             <p>&copy; 2025 CONEXTRAVEL. Todos os direitos reservados.</p>
         </div>

@@ -87,19 +87,16 @@ input:-webkit-autofill, textarea:-webkit-autofill {
     -webkit-text-fill-color: var(--conextravel-texto) !important;
     transition: background-color 5000s ease-in-out 0s;
 }
-
-/* --- BARRA DE AVALIAÇÃO MAIOR --- */
 .range-container { display: flex; flex-direction: column; align-items: center; }
 input[type="range"] {
     -webkit-appearance: none; appearance: none; width: 100%;
-    height: 12px; /* Aumenta a espessura da linha */
+    height: 12px;
     background: var(--conextravel-borda); border-radius: 6px; cursor: pointer; margin-top: 10px;
 }
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none; appearance: none;
-    width: 28px; /* Aumenta o tamanho da bolinha */
-    height: 28px; /* Aumenta o tamanho da bolinha */
-    background: var(--conextravel-verde); /* Cor corrigida para o verde da marca */
+    width: 28px; height: 28px;
+    background: var(--conextravel-verde);
     border-radius: 50%;
     border: 3px solid var(--conextravel-branco);
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
@@ -107,7 +104,6 @@ input[type="range"]::-webkit-slider-thumb {
 }
 input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.1); }
 .range-value-display { margin-top: 20px; font-size: 3rem; font-weight: 700; color: var(--conextravel-azul); }
-
 .radio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
 .radio-grid.simple { grid-template-columns: 1fr; max-width: 450px; margin: 0 auto; gap: 10px; }
 .radio-option input[type="radio"] { display: none; }
@@ -121,16 +117,62 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.1); }
     background-color: var(--conextravel-azul); color: var(--conextravel-branco); border-color: var(--conextravel-azul);
     transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
+
+/* --- NOVO: Estilo dos Checkboxes --- */
+.checkbox-grid { 
+    display: grid; 
+    grid-template-columns: 1fr; /* Uma coluna */
+    max-width: 450px; 
+    margin: 0 auto; 
+    gap: 10px; 
+}
+.checkbox-option input[type="checkbox"] { display: none; }
+.checkbox-option label {
+    display: block; padding: 15px; border: 2px solid var(--conextravel-borda);
+    border-radius: 6px; text-align: left; cursor: pointer; font-weight: 500;
+    transition: all 0.3s ease; position: relative; padding-left: 50px;
+}
+.checkbox-option label:hover { border-color: var(--conextravel-azul); }
+.checkbox-option label::before { /* A "caixa" do checkbox */
+    content: '';
+    position: absolute;
+    left: 15px; top: 50%;
+    transform: translateY(-50%);
+    width: 22px; height: 22px;
+    border: 2px solid var(--conextravel-borda);
+    border-radius: 4px;
+    background: var(--conextravel-branco);
+    transition: all 0.3s ease;
+}
+.checkbox-option label::after { /* O "check" */
+    content: '✔';
+    position: absolute;
+    left: 19px; top: 50%;
+    transform: translateY(-50%) scale(0);
+    font-size: 18px;
+    color: var(--conextravel-branco);
+    transition: all 0.2s ease;
+}
+.checkbox-option input[type="checkbox"]:checked + label {
+    background-color: var(--conextravel-branco);
+    color: var(--conextravel-azul);
+    border-color: var(--conextravel-azul);
+}
+.checkbox-option input[type="checkbox"]:checked + label::before {
+    background-color: var(--conextravel-verde);
+    border-color: var(--conextravel-verde);
+}
+.checkbox-option input[type="checkbox"]:checked + label::after {
+    transform: translateY(-50%) scale(1);
+}
+
 .conditional-container {
     position: relative; max-height: 0; overflow: hidden;
     opacity: 0; visibility: hidden; transition: all 0.4s ease-out;
 }
 .conditional-container.visible { max-height: 200px; margin-top: 20px; opacity: 1; visibility: visible; }
 .nav-buttons { display: flex; justify-content: space-between; margin-top: 50px; }
-/* --- CORREÇÃO: CENTRALIZAÇÃO DO BOTÃO "AVANÇAR" SOZINHO --- */
-.nav-buttons:has(button:first-child:last-child) {
-    justify-content: center;
-}
+.nav-buttons:has(button:first-child:last-child) { justify-content: center; }
 .nav-button {
     padding: 12px 30px; border: none; border-radius: 6px; font-family: var(--fonte-principal);
     font-weight: 600; cursor: pointer; font-size: 1rem; text-transform: uppercase;
