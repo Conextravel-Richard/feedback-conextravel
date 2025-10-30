@@ -1,6 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     const form = document.getElementById('feedback-form');
+    // --- NOVOS ITENS SELECIONADOS ---
+    const feedbackIntro = document.querySelector('.feedback-intro');
+    const progressBarContainer = document.querySelector('.progress-bar-container');
+    // --- FIM DOS NOVOS ITENS ---
     const formSteps = Array.from(form.querySelectorAll('.form-step'));
     const progressBar = document.getElementById('progress-bar');
     const nextButtons = form.querySelectorAll('.nav-button.next');
@@ -23,18 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (logoLink) {
         logoLink.addEventListener('click', (event) => {
             event.preventDefault();
-            if (form.style.display !== 'none') {
-                form.reset();
-                // Reseta os dois formulários condicionais
-                outrosDestaqueContainer.classList.remove('visible');
-                outrosDestaqueTexto.required = false;
-                motivoNaoContainer.classList.remove('visible');
-                motivoNaoTexto.required = false;
-                showStep(0);
-            } else {
-                location.reload();
-            }
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            // Recarrega a página para um "reset" limpo
+            location.reload();
         });
     }
 
@@ -69,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- NOVA LÓGICA PARA "INDICARIA (NÃO)" ---
+    // Lógica para "Indicaria (Não)"
     const indicariaRadios = form.querySelectorAll('input[name="indicaria"]');
     const motivoNaoContainer = document.getElementById('motivo-nao-container');
     const motivoNaoTexto = document.getElementById('motivo-nao-texto');
@@ -88,7 +82,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- LÓGICA DE VALIDAÇÃO "AVANÇAR" (CORRIGIDA E ESTÁVEL) ---
     nextButtons.forEach(button => {
         button.addEventListener('click', () => {
             let isValid = true;
@@ -131,7 +124,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- LÓGICA DE ENVIO "SUBMIT" (ATUALIZADA) ---
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
@@ -146,8 +138,8 @@ document.addEventListener('DOMContentLoaded', () => {
             pontoDestaque: formData.getAll('pontoDestaque').join(', '),
             pontoDestaqueOutros: formData.get('pontoDestaqueOutros'),
             conheceEventos: formData.getAll('conheceEventos').join(', '),
-            indicaria: formData.get('indicaria'), // NOVO
-            indicariaMotivo: formData.get('indicariaMotivo'), // NOVO
+            indicaria: formData.get('indicaria'),
+            indicariaMotivo: formData.get('indicariaMotivo'),
             comentarios: formData.get('comentarios')
         };
         
@@ -158,10 +150,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify(data),
             });
             if (response.ok) {
-                progressBar.style.width = '100%';
+                // --- ATUALIZAÇÃO AQUI ---
+                // Esconde tudo, exceto a mensagem de status
                 form.style.display = 'none';
+                feedbackIntro.style.display = 'none';
+                progressBarContainer.style.display = 'none';
+                
+                // Adiciona a mensagem e uma classe para estilização
                 statusMessage.innerHTML = `<h2>Obrigado!</h2><p>Seu feedback foi recebido com sucesso. Ele é muito importante para a Conextravel.</p>`;
-                statusMessage.style.color = 'var(--conextravel-texto)';
+                statusMessage.classList.add('success'); 
+                // --- FIM DA ATUALIZAÇÃO ---
             } else {
                 throw new Error('Houve uma falha no servidor.');
             }

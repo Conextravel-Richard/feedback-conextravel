@@ -44,14 +44,12 @@ body {
 }
 .feedback-intro {
     text-align: center; margin-bottom: 40px; border-bottom: 1px solid var(--conextravel-borda); padding-bottom: 30px;
+    transition: all 0.4s ease-out; /* Adiciona transição */
 }
-.feedback-intro h1 {
-    font-size: 2.2rem; font-weight: 800; color: var(--conextravel-azul); text-transform: uppercase; margin-bottom: 15px;
-}
-.feedback-intro p { font-size: 1.1rem; color: #555555; max-width: 600px; margin: 0 auto; }
 .progress-bar-container {
     height: 8px; background-color: var(--conextravel-borda);
     border-radius: 4px; margin-bottom: 40px; overflow: hidden;
+    transition: all 0.4s ease-out; /* Adiciona transição */
 }
 .progress-bar {
     height: 100%; width: 0%; background-color: var(--conextravel-verde);
@@ -163,7 +161,37 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.1); }
 .nav-button.next, .nav-button.submit { background-color: var(--conextravel-verde); color: var(--conextravel-branco); }
 .nav-button.next:hover, .nav-button.submit:hover { background-color: var(--conextravel-verde-hover); }
 .nav-button.prev:hover { background-color: #d0d0d0; }
-#status-message { text-align: center; margin-top: 20px; font-weight: 600; min-height: 24px; }
+#status-message { 
+    text-align: center; 
+    margin-top: 20px; 
+    font-weight: 600; 
+    min-height: 24px; 
+}
+
+/* --- NOVO: Estilo da Tela de Sucesso --- */
+#status-message.success {
+    padding: 60px 0;
+    min-height: 350px; /* Garante que o card mantenha a altura */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.5s ease-out;
+    color: var(--conextravel-texto); /* Garante que não fique vermelho */
+}
+#status-message.success h2 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--conextravel-azul);
+    margin-bottom: 15px;
+}
+#status-message.success p {
+    font-size: 1.1rem;
+    color: #555555;
+    font-weight: normal;
+}
+
+/* --- RODAPÉ --- */
 .site-footer { background-color: var(--conextravel-azul); color: var(--conextravel-branco); padding-top: 60px; }
 .footer-logo { max-width: 200px; margin-bottom: 20px; filter: brightness(0) invert(1); transition: opacity 0.3s ease; }
 .footer-logo:hover { opacity: 0.8; }
