@@ -65,16 +65,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- LÓGICA DE VALIDAÇÃO CORRIGIDA E ROBUSTA ---
+    // --- LÓGICA DE VALIDAÇÃO "AVANÇAR" (CORRIGIDA E ESTÁVEL) ---
     nextButtons.forEach(button => {
         button.addEventListener('click', () => {
-            const currentInputs = formSteps[currentStep].querySelectorAll('[required]');
             let isValid = true;
-            let checkedGroups = {}; // Para rastrear grupos
+            const currentInputs = formSteps[currentStep].querySelectorAll('[required]');
+            let checkedGroups = {};
 
             currentInputs.forEach(input => {
-                // Ignora campos que estão escondidos
-                if (input.offsetWidth === 0 && input.offsetHeight === 0) return; 
+                if (input.offsetParent === null) return; 
 
                 if (input.type === 'radio' || input.type === 'checkbox') {
                     const groupName = input.name;
@@ -84,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                         checkedGroups[groupName] = true;
                     }
-                } else if (!input.value.trim()) { // Validação para campos de texto
+                } else if (!input.checkValidity()) { // Usa a validação nativa
                     isValid = false;
                 }
             });
@@ -92,9 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (isValid) {
                 showStep(currentStep + 1);
             } else {
-                // Se for inválido, força o navegador a mostrar a mensagem de erro
-                // (focando no primeiro campo inválido)
-                formSteps[currentStep].querySelector('[required]:invalid')?.focus();
+                form.reportValidity(); // Mostra o pop-up de erro do navegador
             }
         });
     });
@@ -111,34 +108,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- ENVIO PARA O NOTION (ESTÁVEL E CORRETO) ---
+    // --- LÓGICA DE ENVIO "SUBMIT" (CORRIGIDA E ESTÁVEL) ---
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        // Validação final antes de enviar
-        const allRequiredInputs = form.querySelectorAll('[required]');
-        let isFormValid = true;
-        let finalCheckedGroups = {};
-        
-        allRequiredInputs.forEach(input => {
-             if (input.offsetWidth === 0 && input.offsetHeight === 0) return;
-             if (input.type === 'radio' || input.type === 'checkbox') {
-                const groupName = input.name;
-                if(finalCheckedGroups[groupName] === undefined) {
-                    if (!form.querySelector(`input[name="${groupName}"]:checked`)) isFormValid = false;
-                    finalCheckedGroups[groupName] = true;
-                }
-             } else if (!input.value.trim()) {
-                isFormValid = false;
-             }
-        });
-
-        if (!isFormValid) {
-             statusMessage.textContent = 'Por favor, preencha todos os campos obrigatórios.';
-             statusMessage.style.color = 'red';
-             return;
-        }
-
         statusMessage.textContent = 'Enviando seu feedback...';
         statusMessage.style.color = 'var(--conextravel-azul)';
         

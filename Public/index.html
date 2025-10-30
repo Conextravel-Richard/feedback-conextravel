@@ -30,23 +30,31 @@
                 <p>Seu feedback nos ajuda a aprimorar cada detalhe da sua experiência de viagem com a CONEXTRAVEL. Por favor, dedique um minuto do seu tempo para nos contar como foi.</p>
             </div>
 
-            <form id="feedback-form">
+            <form id="feedback-form" novalidate>
                 
                 <div class="progress-bar-container">
                     <div id="progress-bar" class="progress-bar"></div>
                 </div>
                 
                 <div class="form-step active-step">
-                    <h2>Para começar, vamos nos identificar:</h2>
+                    <h2>Para começar, qual o nome da sua empresa?</h2>
                     <div class="form-group">
                         <input type="text" id="nome-empresa" name="nomeEmpresa" placeholder=" " required>
                         <label for="nome-empresa" class="input-label">Nome da Empresa</label>
                     </div>
+                    <div class="nav-buttons">
+                        <button type="button" class="nav-button next">Avançar</button>
+                    </div>
+                </div>
+
+                <div class="form-step">
+                    <h2>Obrigado! E qual o seu nome?</h2>
                     <div class="form-group">
                         <input type="text" id="seu-nome" name="seuNome" placeholder=" " required>
                         <label for="seu-nome" class="input-label">Seu nome</label>
                     </div>
                     <div class="nav-buttons">
+                        <button type="button" class="nav-button prev">Voltar</button>
                         <button type="button" class="nav-button next">Avançar</button>
                     </div>
                 </div>
@@ -74,7 +82,6 @@
                         <div class="checkbox-option"><input type="checkbox" id="destaque-custos" name="pontoDestaque" value="Redução de Custos"><label for="destaque-custos">Redução de Custos</label></div>
                         <div class="checkbox-option"><input type="checkbox" id="destaque-outros" name="pontoDestaque" value="Outros"><label for="destaque-outros">Outros</label></div>
                     </div>
-                    
                     <div id="outros-destaque-container" class="conditional-container">
                         <textarea id="destaque-outros-texto" name="pontoDestaqueOutros" rows="3" placeholder=" "></textarea>
                         <label for="destaque-outros-texto" class="input-label">Por favor, especifique</label>

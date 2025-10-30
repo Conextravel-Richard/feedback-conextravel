@@ -16,19 +16,20 @@ exports.handler = async (event) => {
     await notion.pages.create({
       parent: { database_id: NOTION_DATABASE_ID },
       properties: {
-        'Nome da Pessoa': { 
-          title: [{ text: { content: data.seuNome || 'Não preenchido' } }] 
-        },
-        'Nome da Empresa': { 
-          rich_text: [{ text: { content: data.nomeEmpresa || 'Não preenchido' } }] 
-        },
-        'Satisfação (0-5)': { number: parseInt(data.satisfacaoAtendimento, 10) },
         
-        // ATUALIZADO PARA ACEITAR MÚLTIPLAS RESPOSTAS COMO TEXTO
+        // --- MAPEAMENTO CORRETO DE ACORDO COM SEU NOTION ---
+        'Nome da Empresa': { 
+          title: [{ text: { content: data.nomeEmpresa || 'Não preenchido' } }] 
+        },
+        'Nome da Pessoa': { 
+          rich_text: [{ text: { content: data.seuNome || 'Não preenchido' } }] 
+        },
+        // --- FIM DA CORREÇÃO ---
+
+        'Satisfação (0-5)': { number: parseInt(data.satisfacaoAtendimento, 10) },
         'Ponto de Destaque': { 
           rich_text: [{ text: { content: data.pontoDestaque || 'Nenhuma opção marcada' } }] 
         },
-        
         'Ponto de Destaque (Outros)': { rich_text: [{ text: { content: data.pontoDestaqueOutros || 'N/A' } }] },
         'Conhece Dept. Eventos': { rich_text: [{ text: { content: data.conheceEventos || 'Nenhuma opção marcada' } }] },
         'Comentários': { rich_text: [{ text: { content: data.comentarios || 'Nenhum comentário' } }] },
