@@ -17,21 +17,28 @@ exports.handler = async (event) => {
       parent: { database_id: NOTION_DATABASE_ID },
       properties: {
         
-        // --- MAPEAMENTO CORRETO DE ACORDO COM SEU NOTION ---
         'Nome da Empresa': { 
           title: [{ text: { content: data.nomeEmpresa || 'Não preenchido' } }] 
         },
         'Nome da Pessoa': { 
           rich_text: [{ text: { content: data.seuNome || 'Não preenchido' } }] 
         },
-        // --- FIM DA CORREÇÃO ---
-
         'Satisfação (0-5)': { number: parseInt(data.satisfacaoAtendimento, 10) },
         'Ponto de Destaque': { 
           rich_text: [{ text: { content: data.pontoDestaque || 'Nenhuma opção marcada' } }] 
         },
         'Ponto de Destaque (Outros)': { rich_text: [{ text: { content: data.pontoDestaqueOutros || 'N/A' } }] },
         'Conhece Dept. Eventos': { rich_text: [{ text: { content: data.conheceEventos || 'Nenhuma opção marcada' } }] },
+        
+        // --- NOVAS COLUNAS ADICIONADAS ---
+        'Indicaria?': { 
+          rich_text: [{ text: { content: data.indicaria || 'Não preenchido' } }] 
+        },
+        'Motivo (Não Indicação)': { 
+          rich_text: [{ text: { content: data.indicariaMotivo || 'N/A' } }] 
+        },
+        // --- FIM DAS NOVAS COLUNAS ---
+        
         'Comentários': { rich_text: [{ text: { content: data.comentarios || 'Nenhum comentário' } }] },
         'Data de Envio': { date: { start: new Date().toISOString() } },
       },

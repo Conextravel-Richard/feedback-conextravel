@@ -37,24 +37,16 @@
                 </div>
                 
                 <div class="form-step active-step">
-                    <h2>Para começar, qual o nome da sua empresa?</h2>
+                    <h2>Para começar, vamos nos identificar:</h2>
                     <div class="form-group">
                         <input type="text" id="nome-empresa" name="nomeEmpresa" placeholder=" " required>
                         <label for="nome-empresa" class="input-label">Nome da Empresa</label>
                     </div>
-                    <div class="nav-buttons">
-                        <button type="button" class="nav-button next">Avançar</button>
-                    </div>
-                </div>
-
-                <div class="form-step">
-                    <h2>Obrigado! E qual o seu nome?</h2>
                     <div class="form-group">
                         <input type="text" id="seu-nome" name="seuNome" placeholder=" " required>
                         <label for="seu-nome" class="input-label">Seu nome</label>
                     </div>
                     <div class="nav-buttons">
-                        <button type="button" class="nav-button prev">Voltar</button>
                         <button type="button" class="nav-button next">Avançar</button>
                     </div>
                 </div>
@@ -93,7 +85,7 @@
                 </div>
 
                 <div class="form-step">
-                    <h2>Você sabia que a Conextravel também possui um departamento especializado em eventos corporativos, viagens de incentivo, premiações e viagens a lazer?</h2>
+                    <h2>Sobre nosso departamento de eventos corporativos... (pode marcar mais de uma)</h2>
                     <div class="form-group checkbox-grid">
                         <div class="checkbox-option"><input type="checkbox" id="eventos-utilizei" name="conheceEventos" value="Sim, e já utilizei os serviços" required><label for="eventos-utilizei">Sim, já Conheço e utilizei</label></div>
                         <div class="checkbox-option"><input type="checkbox" id="eventos-conheco" name="conheceEventos" value="Conheço, mas nunca utilizei"><label for="eventos-conheco">Conheço, mas nunca utilizei</label></div>
@@ -106,6 +98,22 @@
                     </div>
                 </div>
                 
+                <div class="form-step">
+                    <h2>Você indicaria a CONEXTRAVEL para algum cliente?</h2>
+                    <div class="form-group radio-grid">
+                        <div class="radio-option"><input type="radio" id="indica-sim" name="indicaria" value="Sim" required><label for="indica-sim">Sim</label></div>
+                        <div class="radio-option"><input type="radio" id="indica-nao" name="indicaria" value="Não" required><label for="indica-nao">Não</label></div>
+                    </div>
+                    <div id="motivo-nao-container" class="conditional-container">
+                        <textarea id="motivo-nao-texto" name="indicariaMotivo" rows="3" placeholder=" "></textarea>
+                        <label for="motivo-nao-texto" class="input-label">Por favor, conte-nos o porquê</label>
+                    </div>
+                    <div class="nav-buttons">
+                        <button type="button" class="nav-button prev">Voltar</button>
+                        <button type="button" class="nav-button next">Avançar</button>
+                    </div>
+                </div>
+
                 <div class="form-step">
                     <h2>Para finalizar, em sua opinião, o que podemos melhorar?</h2>
                     <div class="form-group">

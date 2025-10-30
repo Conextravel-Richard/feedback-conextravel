@@ -25,8 +25,11 @@ document.addEventListener('DOMContentLoaded', () => {
             event.preventDefault();
             if (form.style.display !== 'none') {
                 form.reset();
+                // Reseta os dois formulários condicionais
                 outrosDestaqueContainer.classList.remove('visible');
                 outrosDestaqueTexto.required = false;
+                motivoNaoContainer.classList.remove('visible');
+                motivoNaoTexto.required = false;
                 showStep(0);
             } else {
                 location.reload();
@@ -47,6 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Lógica para "Ponto de Destaque (Outros)"
     const pontoDestaqueRadios = form.querySelectorAll('input[name="pontoDestaque"]');
     const outrosDestaqueContainer = document.getElementById('outros-destaque-container');
     const outrosDestaqueTexto = document.getElementById('destaque-outros-texto');
@@ -61,6 +65,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 outrosDestaqueContainer.classList.remove('visible');
                 outrosDestaqueTexto.required = false;
                 outrosDestaqueTexto.value = '';
+            }
+        });
+    });
+
+    // --- NOVA LÓGICA PARA "INDICARIA (NÃO)" ---
+    const indicariaRadios = form.querySelectorAll('input[name="indicaria"]');
+    const motivoNaoContainer = document.getElementById('motivo-nao-container');
+    const motivoNaoTexto = document.getElementById('motivo-nao-texto');
+
+    indicariaRadios.forEach(radio => {
+        radio.addEventListener('change', () => {
+            const indicaNao = document.getElementById('indica-nao');
+            if (indicaNao.checked) {
+                motivoNaoContainer.classList.add('visible');
+                motivoNaoTexto.required = true;
+            } else {
+                motivoNaoContainer.classList.remove('visible');
+                motivoNaoTexto.required = false;
+                motivoNaoTexto.value = '';
             }
         });
     });
@@ -83,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                         checkedGroups[groupName] = true;
                     }
-                } else if (!input.checkValidity()) { // Usa a validação nativa
+                } else if (!input.checkValidity()) {
                     isValid = false;
                 }
             });
@@ -91,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (isValid) {
                 showStep(currentStep + 1);
             } else {
-                form.reportValidity(); // Mostra o pop-up de erro do navegador
+                form.reportValidity();
             }
         });
     });
@@ -108,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- LÓGICA DE ENVIO "SUBMIT" (CORRIGIDA E ESTÁVEL) ---
+    // --- LÓGICA DE ENVIO "SUBMIT" (ATUALIZADA) ---
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
@@ -123,6 +146,8 @@ document.addEventListener('DOMContentLoaded', () => {
             pontoDestaque: formData.getAll('pontoDestaque').join(', '),
             pontoDestaqueOutros: formData.get('pontoDestaqueOutros'),
             conheceEventos: formData.getAll('conheceEventos').join(', '),
+            indicaria: formData.get('indicaria'), // NOVO
+            indicariaMotivo: formData.get('indicariaMotivo'), // NOVO
             comentarios: formData.get('comentarios')
         };
         
