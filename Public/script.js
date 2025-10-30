@@ -65,34 +65,36 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- LÓGICA DE VALIDAÇÃO DO BOTÃO "AVANÇAR" CORRIGIDA ---
+    // --- LÓGICA DE VALIDAÇÃO CORRIGIDA E ROBUSTA ---
     nextButtons.forEach(button => {
         button.addEventListener('click', () => {
-            let isValid = true;
-            // Pega todos os inputs 'required' APENAS na etapa atual
             const currentInputs = formSteps[currentStep].querySelectorAll('[required]');
-            
-            // Valida cada um usando a API do navegador
+            let isValid = true;
+            let checkedGroups = {}; // Para rastrear grupos
+
             currentInputs.forEach(input => {
-                if (!input.checkValidity()) {
+                // Ignora campos que estão escondidos
+                if (input.offsetWidth === 0 && input.offsetHeight === 0) return; 
+
+                if (input.type === 'radio' || input.type === 'checkbox') {
+                    const groupName = input.name;
+                    if (checkedGroups[groupName] === undefined) { 
+                        if (!form.querySelector(`input[name="${groupName}"]:checked`)) {
+                            isValid = false;
+                        }
+                        checkedGroups[groupName] = true;
+                    }
+                } else if (!input.value.trim()) { // Validação para campos de texto
                     isValid = false;
                 }
             });
-
-            // Lógica especial para grupos de checkbox
-            const checkboxGroups = formSteps[currentStep].querySelectorAll('input[type="checkbox"][required]');
-            if (checkboxGroups.length > 0) {
-                const groupName = checkboxGroups[0].name;
-                if (!form.querySelector(`input[name="${groupName}"]:checked`)) {
-                    isValid = false;
-                }
-            }
             
             if (isValid) {
                 showStep(currentStep + 1);
             } else {
                 // Se for inválido, força o navegador a mostrar a mensagem de erro
-                form.reportValidity();
+                // (focando no primeiro campo inválido)
+                formSteps[currentStep].querySelector('[required]:invalid')?.focus();
             }
         });
     });
@@ -109,14 +111,32 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- ENVIO PARA O NOTION (CORRIGIDO) ---
+    // --- ENVIO PARA O NOTION (ESTÁVEL E CORRETO) ---
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        // Verifica a validade do formulário inteiro uma última vez
-        if (!form.checkValidity()) {
-            form.reportValidity();
-            return;
+        // Validação final antes de enviar
+        const allRequiredInputs = form.querySelectorAll('[required]');
+        let isFormValid = true;
+        let finalCheckedGroups = {};
+        
+        allRequiredInputs.forEach(input => {
+             if (input.offsetWidth === 0 && input.offsetHeight === 0) return;
+             if (input.type === 'radio' || input.type === 'checkbox') {
+                const groupName = input.name;
+                if(finalCheckedGroups[groupName] === undefined) {
+                    if (!form.querySelector(`input[name="${groupName}"]:checked`)) isFormValid = false;
+                    finalCheckedGroups[groupName] = true;
+                }
+             } else if (!input.value.trim()) {
+                isFormValid = false;
+             }
+        });
+
+        if (!isFormValid) {
+             statusMessage.textContent = 'Por favor, preencha todos os campos obrigatórios.';
+             statusMessage.style.color = 'red';
+             return;
         }
 
         statusMessage.textContent = 'Enviando seu feedback...';
