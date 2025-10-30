@@ -10,13 +10,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const rangeValueDisplay = document.querySelector('.range-value-display');
     let currentStep = 0;
 
-    // --- LÓGICA DE TRANSIÇÃO SIMPLES E ESTÁVEL ---
     function showStep(stepIndex) {
         formSteps.forEach((step, index) => {
             step.classList.toggle('active-step', index === stepIndex);
         });
         currentStep = stepIndex;
-
         const progress = (currentStep / (formSteps.length - 1)) * 100;
         progressBar.style.width = `${progress}%`;
     }
@@ -49,12 +47,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // LÓGICA ATUALIZADA PARA 'pontoDestaque' (AGORA CHECKBOX)
     const pontoDestaqueRadios = form.querySelectorAll('input[name="pontoDestaque"]');
     const outrosDestaqueContainer = document.getElementById('outros-destaque-container');
     const outrosDestaqueTexto = document.getElementById('destaque-outros-texto');
-    pontoDestaqueRadios.forEach(radio => {
-        radio.addEventListener('change', () => {
-            if (radio.value === 'Outros' && radio.checked) {
+    
+    pontoDestaqueRadios.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            const outrosCheckbox = document.getElementById('destaque-outros');
+            if (outrosCheckbox.checked) {
                 outrosDestaqueContainer.classList.add('visible');
                 outrosDestaqueTexto.required = true;
             } else {
@@ -65,26 +66,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- LÓGICA DE VALIDAÇÃO CORRIGIDA E ROBUSTA ---
+    // LÓGICA DE VALIDAÇÃO DO BOTÃO "AVANÇAR" CORRIGIDA
     nextButtons.forEach(button => {
         button.addEventListener('click', () => {
             const currentInputs = formSteps[currentStep].querySelectorAll('[required]');
             let isValid = true;
-            let checkedGroups = {}; // Para rastrear grupos de radio/checkbox
-
+            
+            // Valida apenas os campos de texto 'required'
             currentInputs.forEach(input => {
-                // Ignora campos que estão escondidos (como o "Outros" quando não selecionado)
-                if (input.offsetWidth === 0 && input.offsetHeight === 0) return; 
-
-                if (input.type === 'radio' || input.type === 'checkbox') {
-                    const groupName = input.name;
-                    if (checkedGroups[groupName] === undefined) { // Só checa o grupo uma vez
-                        if (!form.querySelector(`input[name="${groupName}"]:checked`)) {
-                            isValid = false;
-                        }
-                        checkedGroups[groupName] = true; // Marca o grupo como checado
-                    }
-                } else if (!input.value.trim()) { // Validação para campos de texto
+                if (input.type === 'text' && !input.value.trim()) {
+                    isValid = false;
+                }
+                // Não é mais
+                if(input.type === 'radio' && !form.querySelector(`input[name="${input.name}"]:checked`)) {
                     isValid = false;
                 }
             });
@@ -107,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- ENVIO PARA O NOTION (JÁ CORRIGIDO) ---
+    // ENVIO PARA O NOTION (CORRIGIDO PARA O BOTÃO FUNCIONAR)
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         statusMessage.textContent = 'Enviando seu feedback...';
@@ -116,11 +110,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const formData = new FormData(form);
         const data = {
             nomeEmpresa: formData.get('nomeEmpresa'),
-            seuNome: formData.get('seuNome'), // Campo "Seu nome"
+            seuNome: formData.get('seuNome'),
             satisfacaoAtendimento: formData.get('satisfacaoAtendimento'),
-            pontoDestaque: formData.get('pontoDestaque'),
+            pontoDestaque: formData.getAll('pontoDestaque').join(', '), // ATUALIZADO
             pontoDestaqueOutros: formData.get('pontoDestaqueOutros'),
-            conheceEventos: formData.getAll('conheceEventos').join(', '), // Pega todas as opções
+            conheceEventos: formData.getAll('conheceEventos').join(', '),
             comentarios: formData.get('comentarios')
         };
         
